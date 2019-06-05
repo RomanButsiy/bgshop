@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from "prop-types";
 import Featured from './Featured'
 
-const GameCard = ({game}) => (
+const GameCard = ({game, toggleFeatured }) => (
     <div className="ui card">
         <div className="image">
             <span className="ui green ribbon label">${game.price}</span>
-            <Featured featured={game.featured}/>
+            <Featured 
+                featured={game.featured}
+                toggleFeatured={toggleFeatured}
+                gameId={game._id}
+            />
             <img 
                 src={game.thumbnail}
                 alt="Game Cover"
@@ -30,7 +34,8 @@ GameCard.propTypes = {
         price: PropTypes.number.isRequired,
         duration: PropTypes.number.isRequired,
         featured: PropTypes.bool.isRequired
-    }).isRequired
+    }).isRequired,
+    toggleFeatured: PropTypes.func.isRequired
 }
 
 export default GameCard;
