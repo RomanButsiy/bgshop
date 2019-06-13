@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import Featured from './Featured'
+import Price from './Price'
 
 const GameCard = ({game, toggleFeatured }) => (
     <div className="ui card">
         <div className="image">
-            <span className="ui green ribbon label">${game.price}</span>
+            <Price
+                cents={game.price}
+            />
             <Featured 
                 featured={game.featured}
                 toggleFeatured={toggleFeatured}
