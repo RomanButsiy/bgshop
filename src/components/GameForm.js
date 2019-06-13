@@ -7,6 +7,12 @@ const tags = [
     { _id: 3, name: "family" }
 ];
 
+const genres = [
+    { _id: 1, name: "abstract" },
+    { _id: 2, name: "euro" },
+    { _id: 3, name: "ameritrash" }
+];
+
 class GameForm extends Component {
     state = {
         name: "",
@@ -15,7 +21,8 @@ class GameForm extends Component {
         duration: 0,
         players: "",
         featured: false,
-        tags: []
+        tags: [],
+        genre: 1
     };
 
     handleSubmit = e => {
@@ -29,6 +36,7 @@ class GameForm extends Component {
         this.state.tags.includes(tag._id)
             ? this.setState({ tags: this.state.tags.filter(id => id !== tag._id) })
             : this.setState({ tags: [...this.state.tags, tag._id] });
+     handleGenreChange = genre => this.setState({ genre: genre._id })       
 
     render() {
         return (
@@ -111,19 +119,31 @@ class GameForm extends Component {
                 </div>
                 <div className="field">
                     <label>Tags</label>
-                    {
-                        tags.map(tag => (
-                            <div key={tag._id} className="inline field">
-                                <input
-                                    id={`tag-${tag._id}`}
-                                    type="checkbox"
-                                    checked={this.state.tags.includes(tag._id)}
-                                    onChange={() => this.toggleTag(tag)}
-                                />
-                                <label htmlFor={`tag-${tag._id}`}>{tag.name}</label>
-                            </div>
-                        ))
-                    }
+                    {tags.map(tag => (
+                        <div key={tag._id} className="inline field">
+                            <input
+                                id={`tag-${tag._id}`}
+                                type="checkbox"
+                                checked={this.state.tags.includes(tag._id)}
+                                onChange={() => this.toggleTag(tag)}
+                            />
+                            <label htmlFor={`tag-${tag._id}`}>{tag.name}</label>
+                        </div>
+                    ))}
+                </div>
+                <div className="field">
+                    <label>Genres</label>
+                    {genres.map(genre => (
+                        <div key={genre._id} className="inline field">
+                            <input
+                                id={`genre-${genre._id}`}
+                                type="radio"
+                                checked={this.state.genre === genre._id}
+                                onChange={() => this.handleGenreChange(genre)}
+                            />
+                            <label htmlFor={`genre-${genre._id}`}>{genre.name}</label>
+                        </div>
+                    ))}
                 </div>
                 <button className="ui button" type="submit">
                     Create
