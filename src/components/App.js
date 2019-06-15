@@ -3,6 +3,9 @@ import _orderBy from 'lodash/orderBy';
 import GameList from './GamesList';
 import GameForm from './GameForm';
 import TopNavigation from './TopNavigation';
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
+
 
 const publishers = [
     {
@@ -51,7 +54,9 @@ const games = [
 class App extends React.Component {
     state = {
         games: [],
-        showGameForm: false
+        showGameForm: false,
+        showLoginForm: false,
+        showSignupForm: false
     };
 
     componentDidMount() {
@@ -72,25 +77,58 @@ class App extends React.Component {
             )
         });
 
-    showGameForm = () => this.setState({ showGameForm: true });
-    hideGameForm = () => this.setState({ showGameForm: false });     
+    showGameForm = () => {
+        this.hideAllForms();
+        this.setState({ showGameForm: !this.state.showGameForm });
+    }
+    showLoginForm = () => {
+        this.hideAllForms();
+        this.setState({ showLoginForm: !this.state.showLoginForm });
+    }
+    showSignupForm = () => {
+        this.hideAllForms();
+        this.setState({ showSignupForm: !this.state.showSignupForm });
+    }
+    hideAllForms = () => 
+        this.setState({ 
+            showGameForm: false,
+            showLoginForm: false,
+            showSignupForm: false 
+        });     
 
     render() {
-        const numberOfColumns = this.state.showGameForm ? "ten" : "sixteen";
+        const numberOfColumns = (
+            this.state.showGameForm || 
+            this.state.showSignupForm  || 
+            this.state.showLoginForm ) ? "ten" : "sixteen";
         return (
             <div className="ui container">
-                <TopNavigation showGameForm={this.showGameForm}/>
+                <TopNavigation 
+                    showGameForm={this.showGameForm}
+                    showSignupForm={this.showSignupForm}
+                    showLoginForm={this.showLoginForm}
+                />
                 <div className="ui stackable grid">
                     {this.state.showGameForm && (
                         <div className="six wide column">
-                            <GameForm publishers={publishers} cancel={this.hideGameForm} />
+                            <GameForm publishers={publishers} cancel={this.hideAllForms} />
+                        </div>
+                    )}
+                    {this.state.showSignupForm && (
+                        <div className="six wide column">
+                            <SignupForm cancel={this.hideAllForms} />
+                        </div>
+                    )}
+                    {this.state.showLoginForm && (
+                        <div className="six wide column">
+                            <LoginForm cancel={this.hideAllForms} />
                         </div>
                     )}
                     <div className={`${numberOfColumns} wide column`}>
-                    <GameList 
-                        games={this.state.games}
-                        toggleFeatured={this.toggleFeatured} 
-                    />
+                        <GameList 
+                            games={this.state.games}
+                            toggleFeatured={this.toggleFeatured} 
+                        />
                     </div>
                 </div>
             </div>
