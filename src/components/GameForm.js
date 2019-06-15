@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
+import ReactImageFallback from "react-image-fallback";
 
-const tags = [
-    { _id: 1, name: "dice" },
-    { _id: 2, name: "economic" },
-    { _id: 3, name: "family" }
-];
-
-const genres = [
-    { _id: 1, name: "abstract" },
-    { _id: 2, name: "euro" },
-    { _id: 3, name: "ameritrash" }
-];
 
 class GameForm extends Component {
     state = {
@@ -21,9 +11,8 @@ class GameForm extends Component {
         duration: 0,
         players: "",
         featured: false,
-        tags: [],
-        genre: 1,
-        publisher: 0
+        publisher: 0,
+        thumbnail: ""
     };
 
     handleSubmit = e => {
@@ -32,39 +21,57 @@ class GameForm extends Component {
     };
     handleStringChange = e => this.setState({ [e.target.name]: e.target.value });
     handleNumberChange = e => this.setState({ [e.target.name]: parseInt(e.target.value, 10) });
-    handleCheckboxChange = e => this.setState({ [e.target.name]: e.target.checked });
-    toggleTag = tag => 
-        this.state.tags.includes(tag._id)
-            ? this.setState({ tags: this.state.tags.filter(id => id !== tag._id) })
-            : this.setState({ tags: [...this.state.tags, tag._id] });
-     handleGenreChange = genre => this.setState({ genre: genre._id })       
+    handleCheckboxChange = e => this.setState({ [e.target.name]: e.target.checked });     
 
     render() {
         return (
             <form className="ui form" onSubmit={this.handleSubmit}>
-                <div className="field">
-                    <label htmlFor="name">
-                        Game Title
-                    </label>
-                    <input 
-                        type="text" 
-                        id="name"
-                        name="name" 
-                        placeholder="Full game title"
-                        value={this.state.name}
-                        onChange={this.handleStringChange}
-                    />
+                <div className="ui grid">
+                    <div className="twelve wide column">
+                        <div className="field">
+                            <label htmlFor="name">
+                                Game Title
+                            </label>
+                            <input 
+                                type="text" 
+                                id="name"
+                                name="name" 
+                                placeholder="Full game title"
+                                value={this.state.name}
+                                onChange={this.handleStringChange}
+                            />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="description">
+                                Game Description
+                            </label>
+                            <textarea 
+                                type="text" 
+                                id="description"
+                                name="description" 
+                                placeholder="Game description"
+                                value={this.state.description}
+                                onChange={this.handleStringChange}
+                            />
+                        </div>
+                    </div>
+                    <div className="four wide column">
+                        <ReactImageFallback
+                            src={this.state.thumbnail}
+                            fallbackImage="http://via.placeholder.com/250x250"
+                            alt="Thumbnaill"
+                            className="ui image"
+                        />
+                    </div>
                 </div>
                 <div className="field">
-                    <label htmlFor="description">
-                        Game Description
-                    </label>
-                    <textarea 
+                    <label htmlFor="thumbnail">Thumbnail</label>
+                    <input 
                         type="text" 
-                        id="description"
-                        name="description" 
-                        placeholder="Game description"
-                        value={this.state.description}
+                        id="thumbnail"
+                        name="thumbnail" 
+                        placeholder="Image URL"
+                        value={this.state.thumbnail}
                         onChange={this.handleStringChange}
                     />
                 </div>
@@ -117,34 +124,6 @@ class GameForm extends Component {
                     <label htmlFor="featured">
                         Featured?
                     </label>
-                </div>
-                <div className="field">
-                    <label>Tags</label>
-                    {tags.map(tag => (
-                        <div key={tag._id} className="inline field">
-                            <input
-                                id={`tag-${tag._id}`}
-                                type="checkbox"
-                                checked={this.state.tags.includes(tag._id)}
-                                onChange={() => this.toggleTag(tag)}
-                            />
-                            <label htmlFor={`tag-${tag._id}`}>{tag.name}</label>
-                        </div>
-                    ))}
-                </div>
-                <div className="field">
-                    <label>Genres</label>
-                    {genres.map(genre => (
-                        <div key={genre._id} className="inline field">
-                            <input
-                                id={`genre-${genre._id}`}
-                                type="radio"
-                                checked={this.state.genre === genre._id}
-                                onChange={() => this.handleGenreChange(genre)}
-                            />
-                            <label htmlFor={`genre-${genre._id}`}>{genre.name}</label>
-                        </div>
-                    ))}
                 </div>
                 <div className="field">
                         <label>Publishers</label>
