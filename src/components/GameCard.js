@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import Featured from './Featured'
 import Price from './Price'
+import "../styles/LinkButton.css"
 
 const GameCard = ({game, toggleFeatured }) => (
     <div className="ui card">
@@ -20,7 +21,9 @@ const GameCard = ({game, toggleFeatured }) => (
             />
         </div>
         <div className="content">
-            <a className="header">{game.name}</a>
+            <button id="link-button" type="button" className="header link-button">
+                {game.name}
+            </button>
             <div className="meta">
                 <i className="icon users" /> {game.players}&nbsp;
                 <i className="icon wait" /> {game.duration} min.

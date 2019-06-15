@@ -1,0 +1,12 @@
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+  
+button#link-button.header.link-button:hover, button#link-button.header.link-button:focus {
+    color: #E18728;
+}
