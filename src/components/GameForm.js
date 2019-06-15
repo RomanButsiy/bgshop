@@ -22,7 +22,8 @@ class GameForm extends Component {
         players: "",
         featured: false,
         tags: [],
-        genre: 1
+        genre: 1,
+        publisher: 0
     };
 
     handleSubmit = e => {
@@ -145,6 +146,21 @@ class GameForm extends Component {
                         </div>
                     ))}
                 </div>
+                <div className="field">
+                        <label>Publishers</label>
+                        <select
+                            name="publisher"
+                            value={this.state.publisher}
+                            onChange={this.handleNumberChange}
+                        >
+                            <option value="0">Choose Publisher</option>
+                            {this.props.publishers.map(publisher => (
+                                <option value={publisher._id} key={publisher._id}>
+                                    {publisher.name}
+                                </option>
+                            ))}
+                        </select>
+                </div>
                 <button className="ui button" type="submit">
                     Create
                 </button>
@@ -154,7 +170,16 @@ class GameForm extends Component {
 }
 
 GameForm.propTypes = {
-    
+    publishers: PropTypes.arrayOf(
+        PropTypes.shape({
+            _id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired
+        })
+    ).isRequired
 };
+
+GameForm.defaultProps = {
+    publishers: []
+}
 
 export default GameForm;
