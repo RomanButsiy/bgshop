@@ -3,19 +3,26 @@ import PropTypes from "prop-types";
 
 class SignupForm extends Component {
     state = {
-        email: "",
-        password: "",
-        passwordConfirm: ""    
+        data: {
+            email: "",
+            password: "",
+            passwordConfirm: "" 
+        },
+        errors: {}   
     };
 
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state)
+        console.log(this.state.data)
     };
 
-    handleStringChange = e => this.setState({ [e.target.name]: e.target.value });
+    handleStringChange = e => 
+        this.setState({ 
+            data: {...this.state.data, [e.target.name]: e.target.value }
+        });
     
     render() {
+        const {data} = this.state;
         return (
             <form className="ui form" onSubmit={this.handleSubmit}>
                 <div className="field">
@@ -27,7 +34,7 @@ class SignupForm extends Component {
                         id="email"
                         name="email" 
                         placeholder="Your Email Address"
-                        value={this.state.email}
+                        value={data.email}
                         onChange={this.handleStringChange}
                     />
                 </div>
@@ -40,7 +47,7 @@ class SignupForm extends Component {
                         id="password"
                         name="password" 
                         placeholder="Make it secure"
-                        value={this.state.password}
+                        value={data.password}
                         onChange={this.handleStringChange}
                     />
                 </div>
@@ -53,7 +60,7 @@ class SignupForm extends Component {
                         id="passwordConfirm"
                         name="passwordConfirm" 
                         placeholder="Make it secure"
-                        value={this.state.passwordConfirm}
+                        value={data.passwordConfirm}
                         onChange={this.handleStringChange}
                     />
                 </div>
