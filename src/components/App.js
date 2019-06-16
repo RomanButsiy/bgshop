@@ -79,26 +79,28 @@ class App extends React.Component {
         });
 
     showGameForm = () => {
-        this.hideAllForms();
-        this.setState({ showGameForm: !this.state.showGameForm });
+        this.hideLoginForm();
+        this.hideSignupForm();
+        this.setState({ showGameForm: true, selectedGame: {} });
     }
     showLoginForm = () => {
-        this.hideAllForms();
+        this.hideSignupForm();
+        this.hideGameForm();
         this.setState({ showLoginForm: !this.state.showLoginForm });
     }
     showSignupForm = () => {
-        this.hideAllForms();
+        this.hideLoginForm();
+        this.hideGameForm();
         this.setState({ showSignupForm: !this.state.showSignupForm });
     }
-    hideAllForms = () => 
-        this.setState({ 
-            showGameForm: false,
-            showLoginForm: false,
-            showSignupForm: false 
-        });
+
+    hideGameForm = () => this.setState({ showGameForm: false });
+    hideLoginForm = () => this.setState({ showLoginForm: false });
+    hideSignupForm = () => this.setState({ showSignupForm: false });    
 
     selectGameForEditing = game => {
-        this.hideAllForms();
+        this.hideLoginForm();
+        this.hideSignupForm();
         this.setState({
             selectedGame: game,
             showGameForm: true
@@ -135,7 +137,7 @@ class App extends React.Component {
                         <div className="six wide column">
                             <GameForm 
                                 publishers={publishers} 
-                                cancel={this.hideAllForms} 
+                                cancel={this.hideGameForm} 
                                 submit={this.addGame}
                                 game={this.state.selectedGame}
                             />
@@ -143,12 +145,12 @@ class App extends React.Component {
                     )}
                     {this.state.showSignupForm && (
                         <div className="six wide column">
-                            <SignupForm cancel={this.hideAllForms} />
+                            <SignupForm cancel={this.hideSignupForm} />
                         </div>
                     )}
                     {this.state.showLoginForm && (
                         <div className="six wide column">
-                            <LoginForm cancel={this.hideAllForms} />
+                            <LoginForm cancel={this.hideLoginForm} />
                         </div>
                     )}
                     <div className={`${numberOfColumns} wide column`}>
