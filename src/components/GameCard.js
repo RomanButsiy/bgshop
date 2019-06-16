@@ -4,7 +4,7 @@ import Featured from './Featured'
 import Price from './Price'
 import "../styles/LinkButton.css"
 
-const GameCard = ({game, toggleFeatured }) => (
+const GameCard = ({game, toggleFeatured, editGame, deleteGame }) => (
     <div className="ui card">
         <div className="image">
             <Price
@@ -29,6 +29,16 @@ const GameCard = ({game, toggleFeatured }) => (
                 <i className="icon wait" /> {game.duration} min.
             </div>    
         </div>
+        <div className="extra content">
+            <div className="ui two buttons">
+                <button className="ui green basic button" onClick={() => editGame(game)}>
+                    <i className="ui icon edit" />
+                </button>
+                <button className="ui red basic button" onClick={() => deleteGame(game)}>
+                    <i className="ui icon trash" />
+                </button>
+            </div>
+        </div>
     </div>
 );
 
@@ -41,7 +51,9 @@ GameCard.propTypes = {
         duration: PropTypes.number.isRequired,
         featured: PropTypes.bool.isRequired
     }).isRequired,
-    toggleFeatured: PropTypes.func.isRequired
+    toggleFeatured: PropTypes.func.isRequired,
+    editGame: PropTypes.func.isRequired,
+    deleteGame: PropTypes.func.isRequired
 }
 
 export default GameCard;
