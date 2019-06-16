@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import ReactImageFallback from "react-image-fallback";
-import FormInlineMessage from "./FormInlineMessage"
+import FormInlineMessage from "./FormInlineMessage";
 
 
 class GameForm extends Component {
@@ -16,14 +16,27 @@ class GameForm extends Component {
             publisher: 0,
             thumbnail: ""
         },
-        errors: {
-            name: "This field can't be blank"
-        }
+        errors: {}
+    };
+
+    validate(data) {
+        const errors = {};
+        if (!data.name) errors.name = "This field can't be blank";
+        if (!data.players) errors.players = "This field can't be blank";
+        if (!data.thumbnail) errors.thumbnail = "This field can't be blank";
+        if (!data.publisher) errors.publisher = "This field can't be blank";
+        if (data.price <= 0) errors.price = "Too cheap, don't you think?";
+        if (data.duration <= 0) errors.duration = "Too short, isn't it?";
+        return errors;
     };
 
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state.data)
+        const errors = this.validate(this.state.data);
+        this.setState({ errors });
+        if (Object.keys(errors).length === 0) {
+            console.log(this.state.data);
+        } 
     };
     handleStringChange = e => 
         this.setState({ 
@@ -61,7 +74,7 @@ class GameForm extends Component {
                             />
                             <FormInlineMessage content={errors.name} type="error" />
                         </div>
-                        <div className={errors.name ? "field error" : "field"}>
+                        <div className={errors.description ? "field error" : "field"}>
                             <label htmlFor="description">
                                 Game Description
                             </label>
@@ -73,7 +86,7 @@ class GameForm extends Component {
                                 value={data.description}
                                 onChange={this.handleStringChange}
                             />
-                            <FormInlineMessage content={errors.name} type="error" />
+                            <FormInlineMessage content={errors.description} type="error" />
                         </div>
                     </div>
                     <div className="four wide column">
@@ -85,7 +98,7 @@ class GameForm extends Component {
                         />
                     </div>
                 </div>
-                <div className={errors.name ? "field error" : "field"}>
+                <div className={errors.thumbnail ? "field error" : "field"}>
                     <label htmlFor="thumbnail">Thumbnail</label>
                     <input 
                         type="text" 
@@ -95,10 +108,10 @@ class GameForm extends Component {
                         value={data.thumbnail}
                         onChange={this.handleStringChange}
                     />
-                    <FormInlineMessage content={errors.name} type="error" />
+                    <FormInlineMessage content={errors.thumbnail} type="error" />
                 </div>
                 <div className="three fields">
-                    <div className={errors.name ? "field error" : "field"}>
+                    <div className={errors.price ? "field error" : "field"}>
                         <label htmlFor="price">
                             Price (in cents)
                         </label>
@@ -109,9 +122,9 @@ class GameForm extends Component {
                             value={data.price}
                             onChange={this.handleNumberChange}
                         />
-                        <FormInlineMessage content={errors.name} type="error" />
+                        <FormInlineMessage content={errors.price} type="error" />
                     </div>
-                    <div className={errors.name ? "field error" : "field"}>
+                    <div className={errors.duration ? "field error" : "field"}>
                         <label htmlFor="duration">
                             Duration (in min)
                         </label>
@@ -122,9 +135,9 @@ class GameForm extends Component {
                             value={data.duration}
                             onChange={this.handleNumberChange}
                         />
-                        <FormInlineMessage content={errors.name} type="error" />
+                        <FormInlineMessage content={errors.duration} type="error" />
                     </div>
-                    <div className={errors.name ? "field error" : "field"}>
+                    <div className={errors.players ? "field error" : "field"}>
                         <label htmlFor="players">
                             Players
                         </label>
@@ -135,7 +148,7 @@ class GameForm extends Component {
                             value={data.players}
                             onChange={this.handleStringChange}
                         />
-                        <FormInlineMessage content={errors.name} type="error" />
+                        <FormInlineMessage content={errors.players} type="error" />
                     </div>
                 </div>
                 <div className="inline field">
@@ -150,7 +163,7 @@ class GameForm extends Component {
                         Featured?
                     </label>
                 </div>
-                <div className={errors.name ? "field error" : "field"}>
+                <div className={errors.publisher ? "field error" : "field"}>
                     <label>Publishers</label>
                     <select
                         name="publisher"
@@ -163,7 +176,7 @@ class GameForm extends Component {
                             </option>
                         ))}
                     </select>
-                    <FormInlineMessage content={errors.name} type="error" />    
+                    <FormInlineMessage content={errors.publisher} type="error" />    
                 </div>
                 <div className="ui fluid buttons">
                     <button className="ui button" type="submit">

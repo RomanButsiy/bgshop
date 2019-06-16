@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
+import FormInlineMessage from "./FormInlineMessage";
 
 class SignupForm extends Component {
     state = {
@@ -11,9 +12,21 @@ class SignupForm extends Component {
         errors: {}   
     };
 
+    validate(data) {
+        const errors = {};
+        if (!data.email) errors.email = "This field can't be blank";
+        if (!data.password) errors.password = "This field can't be blank";
+        if (!data.passwordConfirm) errors.passwordConfirm = "This field can't be blank";
+        return errors;
+    };
+
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state.data)
+        const errors = this.validate(this.state.data);
+        this.setState({ errors });
+        if (Object.keys(errors).length === 0) {
+            console.log(this.state.data);
+        } 
     };
 
     handleStringChange = e => 
@@ -22,10 +35,10 @@ class SignupForm extends Component {
         });
     
     render() {
-        const {data} = this.state;
+        const {data, errors} = this.state;
         return (
             <form className="ui form" onSubmit={this.handleSubmit}>
-                <div className="field">
+                <div className={errors.email ? "field error" : "field"}>
                     <label htmlFor="email">
                         Email
                     </label>
@@ -37,8 +50,9 @@ class SignupForm extends Component {
                         value={data.email}
                         onChange={this.handleStringChange}
                     />
+                    <FormInlineMessage content={errors.email} type="error" />
                 </div>
-                <div className="field">
+                <div className={errors.password ? "field error" : "field"}>
                     <label htmlFor="password">
                         Password
                     </label>
@@ -50,8 +64,9 @@ class SignupForm extends Component {
                         value={data.password}
                         onChange={this.handleStringChange}
                     />
+                    <FormInlineMessage content={errors.password} type="error" />
                 </div>
-                <div className="field">
+                <div className={errors.passwordConfirm ? "field error" : "field"}>
                     <label htmlFor="passwordConfirm">
                         Confirm Password
                     </label>
@@ -63,6 +78,7 @@ class SignupForm extends Component {
                         value={data.passwordConfirm}
                         onChange={this.handleStringChange}
                     />
+                    <FormInlineMessage content={errors.passwordConfirm} type="error" />
                 </div>
                 <div className="ui fluid buttons">
                     <button className="ui button" type="submit">
