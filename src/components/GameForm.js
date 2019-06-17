@@ -17,7 +17,7 @@ const initialData = {
 
 class GameForm extends Component {
     state = {
-        data: { initialData },
+        data: initialData,
         errors: {}
     };
 
@@ -220,12 +220,12 @@ GameForm.propTypes = {
     cancel: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
     game: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        thumbnail: PropTypes.string.isRequired,
-        players: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        duration: PropTypes.number.isRequired,
-        featured: PropTypes.bool.isRequired
+        name: PropTypes.string,
+        thumbnail: PropTypes.string,
+        players: PropTypes.string,
+        price: PropTypes.number,
+        duration: PropTypes.number,
+        featured: PropTypes.bool
     }).isRequired
 };
 
