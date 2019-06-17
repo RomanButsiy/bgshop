@@ -10,11 +10,11 @@ import api from '../api';
 
 const publishers = [
     {
-        _id: 1,
+        _id: "1",
         name: "Days of Wonder"
     },
     {
-        _id: 2,
+        _id: "2",
         name: "Rio Grande Games"
     }
 ];
@@ -122,21 +122,16 @@ class App extends React.Component {
         });
     }
         
-    addGame = game => {
-        this.setState({
-            games: this.sortGames([
-               ...this.state.games,
-               {
-                    ...game,
-                    _id: this.state.games.length + 1,
-               } 
-            ]),
-            showGameForm: false
-        });
+    addGame = gameData => {
+        api.games.create(gameData).then(game =>
+            this.setState({
+                games: this.sortGames([ ...this.state.games, game ]),
+                showGameForm: false
+            })
+        );
     }   
     
     deleteGame = game => {
-        this.showLoginForm();
         this.setState({
             games: this.state.games.filter(item => item._id !== game._id)
         });
