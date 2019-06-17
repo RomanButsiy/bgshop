@@ -94,7 +94,7 @@ class App extends React.Component {
         this.setState({ showSignupForm: !this.state.showSignupForm });
     }
 
-    hideGameForm = () => this.setState({ showGameForm: false });
+    hideGameForm = () => this.setState({ showGameForm: false, selectedGame: {} });
     hideLoginForm = () => this.setState({ showLoginForm: false });
     hideSignupForm = () => this.setState({ showSignupForm: false });    
 
@@ -104,6 +104,19 @@ class App extends React.Component {
         this.setState({
             selectedGame: game,
             showGameForm: true
+        });
+    }
+
+    saveGame = game => {
+        game._id ? this.updateGame(game) : this.addGame(game);
+    }
+
+    updateGame = game => {
+        this.setState({
+            games: this.sortGames(
+                this.state.games.map(item => (item._id === game._id ? game : item))
+            ),
+            showGameForm: false
         });
     }
         
@@ -138,7 +151,7 @@ class App extends React.Component {
                             <GameForm 
                                 publishers={publishers} 
                                 cancel={this.hideGameForm} 
-                                submit={this.addGame}
+                                submit={this.saveGame}
                                 game={this.state.selectedGame}
                             />
                         </div>
