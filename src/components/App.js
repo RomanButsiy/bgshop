@@ -109,27 +109,27 @@ class App extends React.Component {
         });
     }
 
-    saveGame = game => {
+    saveGame = game => 
         game._id ? this.updateGame(game) : this.addGame(game);
-    }
+    
 
-    updateGame = game => {
+    updateGame = game => 
         this.setState({
             games: this.sortGames(
                 this.state.games.map(item => (item._id === game._id ? game : item))
             ),
             showGameForm: false
         });
-    }
+    
         
-    addGame = gameData => {
+    addGame = gameData => 
         api.games.create(gameData).then(game =>
             this.setState({
-                games: this.sortGames([ ...this.state.games, game ]),
+                games: this.sortGames([...this.state.games, game]),
                 showGameForm: false
             })
         );
-    }   
+      
     
     deleteGame = game => {
         this.setState({
