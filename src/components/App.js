@@ -5,6 +5,7 @@ import GameForm from './GameForm';
 import TopNavigation from './TopNavigation';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import api from '../api';
 
 
 const publishers = [
@@ -61,7 +62,8 @@ class App extends React.Component {
     };
 
     componentDidMount() {
-        this.setState({ games: this.sortGames(games)});
+        api.games.fetchAll()
+            .then(games => this.setState({ games: this.sortGames(games)}));
     }
 
     sortGames(games) {
