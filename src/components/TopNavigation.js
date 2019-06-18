@@ -13,10 +13,10 @@ const TopNavigation = ({showGameForm, showLoginForm, showSignupForm}) => (
             <i className="icon plus" /> Add New Game
         </NavLink>
         <NavLink exact to="/login" className="item">
-            <i className="icon plus" /> Login
+            <i className="icon sign-in" /> Login
         </NavLink>
         <NavLink exact to="/signup" className="item">
-            <i className="icon plus" /> Signup
+            <i className="icon pin" /> Signup
         </NavLink>
     </div>           
 );

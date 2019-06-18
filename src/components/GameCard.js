@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import Featured from './Featured'
-import Price from './Price'
-import "../styles/LinkButton.css"
+import Featured from './Featured';
+import Price from './Price';
+import { Link } from "react-router-dom";
 
 class GameCard extends React.Component {
     state = {
@@ -19,6 +19,7 @@ class GameCard extends React.Component {
             <div className="ui card">
             <div className="image">
                 <Price
+                    className="ui green ribbon label"
                     cents={game.price}
                 />
                 <Featured 
@@ -32,9 +33,7 @@ class GameCard extends React.Component {
                 />
             </div>
             <div className="content">
-                <button id="link-button" type="button" className="header link-button">
-                    {game.name}
-                </button>
+                <Link to={`/game/${game._id}`} className="header">{game.name}</Link>
                 <div className="meta">
                     <i className="icon users" /> {game.players}&nbsp;
                     <i className="icon wait" /> {game.duration} min.
@@ -81,6 +80,6 @@ GameCard.propTypes = {
     toggleFeatured: PropTypes.func.isRequired,
     editGame: PropTypes.func.isRequired,
     deleteGame: PropTypes.func.isRequired
-}
+};
 
 export default GameCard;

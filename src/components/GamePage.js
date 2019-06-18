@@ -3,7 +3,6 @@ import _orderBy from 'lodash/orderBy';
 import _find from 'lodash/find';
 import GameList from './GamesList';
 import GameForm from './GameForm';
-import TopNavigation from './TopNavigation';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import api from '../api';
@@ -150,11 +149,6 @@ class GamePage extends React.Component {
             this.state.showLoginForm ) ? "ten" : "sixteen";
         return (
             <div className="ui container">
-                <TopNavigation 
-                    showGameForm={this.showGameForm}
-                    showSignupForm={this.showSignupForm}
-                    showLoginForm={this.showLoginForm}
-                />
                 <div className="ui stackable grid">
                     {this.state.showGameForm && (
                         <div className="six wide column">

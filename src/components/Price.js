@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
-const Price = ({ cents }) => (
-    <span className="ui green ribbon label">
+const Price = ({ cents,  className}) => (
+    <span className={className}>
         {new Intl.NumberFormat('ua-UA', { 
             style: 'currency',
             currency: 'UAH',
@@ -12,7 +12,8 @@ const Price = ({ cents }) => (
 );
 
 Price.propTypes = {
-    cents: PropTypes.number.isRequired
+    cents: PropTypes.number.isRequired,
+    className: PropTypes.string.isRequired
 };
 
 export default Price;
