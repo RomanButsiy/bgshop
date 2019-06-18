@@ -13,7 +13,37 @@ class GameCard extends React.Component {
     hideConfirmation = () => this.setState({ showConfirmation: false });
 
     render() {
-        const { game, toggleFeatured, deleteGame } = this.props;
+        const { game, toggleFeatured, deleteGame, user } = this.props;
+        const adminActions = (
+            <div className="extra content">
+                {
+                    this.state.showConfirmation ? (
+                        <div className="ui two buttons">
+                            <button className="ui green basic button" onClick={() => deleteGame(game)}>
+                                <i className="ui icon check" /> YES
+                            </button>
+                            <button className="ui grey basic button" onClick={this.hideConfirmation}>
+                                <i className="ui icon close" /> NO
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="ui two buttons">
+                            <Link className="ui green basic button" to={`/games/edit/${game._id}`}>
+                                <i className="ui icon edit" />
+                            </Link>
+                            <button className="ui red basic button" onClick={this.showConfirmation}>
+                                <i className="ui icon trash" />
+                            </button>
+                        </div> 
+                    )
+                }
+            </div>
+        );
+        const addToCart = (
+            <div className="extra content">
+                <a className="ui green basic button">Add to Cart</a>
+            </div>
+        );
 
         return (
             <div className="ui card">
@@ -39,30 +69,8 @@ class GameCard extends React.Component {
                     <i className="icon wait" /> {game.duration} min.
                 </div>    
             </div>
-            <div className="extra content">
-                {
-                    this.state.showConfirmation ? (
-                        <div className="ui two buttons">
-                            <button className="ui green basic button" onClick={() => deleteGame(game)}>
-                                <i className="ui icon check" /> YES
-                            </button>
-                            <button className="ui grey basic button" onClick={this.hideConfirmation}>
-                                <i className="ui icon close" /> NO
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="ui two buttons">
-                            <Link className="ui green basic button" to={`/games/edit/${game._id}`}>
-                                <i className="ui icon edit" />
-                            </Link>
-                            <button className="ui red basic button" onClick={this.showConfirmation}>
-                                <i className="ui icon trash" />
-                            </button>
-                        </div> 
-                    )
-                }
-                
-            </div>
+            {user.token && user.role === "user" && addToCart}
+            {user.token && user.role === "admin" && adminActions}
         </div>
         )
     }
@@ -78,7 +86,11 @@ GameCard.propTypes = {
         featured: PropTypes.bool.isRequired
     }).isRequired,
     toggleFeatured: PropTypes.func.isRequired,
-    deleteGame: PropTypes.func.isRequired
+    deleteGame: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+        token: PropTypes.string,
+        role: PropTypes.string.isRequired
+    }).isRequired
 };
 
 export default GameCard;

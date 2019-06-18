@@ -128,6 +128,7 @@ class GamePage extends React.Component {
                                 games={this.state.games}
                                 toggleFeatured={this.toggleFeatured}
                                 deleteGame={this.deleteGame}
+                                user={this.props.user}
                             />
                         )
                     }
