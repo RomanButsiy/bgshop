@@ -4,8 +4,6 @@ import _orderBy from 'lodash/orderBy';
 import _find from 'lodash/find';
 import GameList from './GamesList';
 import GameForm from './GameForm';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
 import api from '../api';
 
 

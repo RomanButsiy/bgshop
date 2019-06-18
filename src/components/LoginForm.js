@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
+import isEmail from "validator/lib/isEmail";
+import { Link } from "react-router-dom";
 import FormInlineMessage from "./FormInlineMessage";
 
 class LoginForm extends Component {
@@ -8,11 +10,13 @@ class LoginForm extends Component {
             email: "",
             password: "" 
         },
+        loading: false,
         errors: {}
     };
 
     validate(data) {
         const errors = {};
+        if(!isEmail(data.email)) errors.email = "You provided invalid email address";
         if (!data.email) errors.email = "This field can't be blank";
         if (!data.password) errors.password = "This field can't be blank";
         return errors;
@@ -23,6 +27,9 @@ class LoginForm extends Component {
         const errors = this.validate(this.state.data);
         this.setState({ errors });
         if (Object.keys(errors).length === 0) {
+            this.setState({ loading: true });
+            this.props.submit(this.state.data)
+                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
             console.log(this.state.data);
         } 
     };
@@ -33,9 +40,10 @@ class LoginForm extends Component {
         });
 
     render() {
-        const {data, errors} = this.state;
+        const {data, errors, loading} = this.state;
+        const formClassNames = loading ? "ui form loading" : "ui form";
         return (
-            <form className="ui form" onSubmit={this.handleSubmit}>
+            <form className={formClassNames} onSubmit={this.handleSubmit}>
                 <div className={errors.email ? "field error" : "field"}>
                     <label htmlFor="email">
                         Email
@@ -65,13 +73,13 @@ class LoginForm extends Component {
                     <FormInlineMessage content={errors.password} type="error" />
                 </div>
                 <div className="ui fluid buttons">
-                    <button className="ui button" type="submit">
+                    <button className="ui primary button" type="submit">
                         Login
                     </button>
                     <div className="or"/>
-                    <button className="ui button" type="button" onClick={this.props.cancel}>
+                    <Link to="/" className="ui button">
                         Cancel
-                    </button>
+                    </Link>
                 </div>
             </form>
         );
@@ -79,7 +87,7 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-    cancel: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired
 };
 
 export default LoginForm;

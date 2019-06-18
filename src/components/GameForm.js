@@ -201,7 +201,7 @@ class GameForm extends Component {
                     <FormInlineMessage content={errors.publisher} type="error" />    
                 </div>
                 <div className="ui fluid buttons">
-                    <button className="ui button" type="submit">
+                    <button className="ui primary button" type="submit">
                         Create
                     </button>
                     <div className="or"/>

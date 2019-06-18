@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import isEmail from "validator/lib/isEmail";
 import FormInlineMessage from "./FormInlineMessage";
 
 class SignupForm extends Component {
@@ -7,16 +9,19 @@ class SignupForm extends Component {
         data: {
             email: "",
             password: "",
-            passwordConfirm: "" 
+            passwordConfirmation: "" 
         },
+        loading: false,
         errors: {}   
     };
 
     validate(data) {
         const errors = {};
+        if(!isEmail(data.email)) errors.email = "You provided invalid email address";
         if (!data.email) errors.email = "This field can't be blank";
         if (!data.password) errors.password = "This field can't be blank";
-        if (!data.passwordConfirm) errors.passwordConfirm = "This field can't be blank";
+        if (data.passwordConfirmation !== data.password) 
+            errors.password = "Password must match";
         return errors;
     };
 
@@ -25,6 +30,9 @@ class SignupForm extends Component {
         const errors = this.validate(this.state.data);
         this.setState({ errors });
         if (Object.keys(errors).length === 0) {
+            this.setState({ loading: true });
+            this.props.submit(this.state.data)
+                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
             console.log(this.state.data);
         } 
     };
@@ -35,9 +43,10 @@ class SignupForm extends Component {
         });
     
     render() {
-        const {data, errors} = this.state;
+        const {data, errors, loading} = this.state;
+        const formClassNames = loading ? "ui form loading" : "ui form";
         return (
-            <form className="ui form" onSubmit={this.handleSubmit}>
+            <form className={formClassNames} onSubmit={this.handleSubmit}>
                 <div className={errors.email ? "field error" : "field"}>
                     <label htmlFor="email">
                         Email
@@ -66,28 +75,28 @@ class SignupForm extends Component {
                     />
                     <FormInlineMessage content={errors.password} type="error" />
                 </div>
-                <div className={errors.passwordConfirm ? "field error" : "field"}>
-                    <label htmlFor="passwordConfirm">
+                <div className={errors.passwordConfirmation ? "field error" : "field"}>
+                    <label htmlFor="passwordConfirmation">
                         Confirm Password
                     </label>
                     <input 
                         type="password" 
-                        id="passwordConfirm"
-                        name="passwordConfirm" 
-                        placeholder="Make it secure"
-                        value={data.passwordConfirm}
+                        id="passwordConfirmation"
+                        name="passwordConfirmation" 
+                        placeholder="Type it again, just to make sure"
+                        value={data.passwordConfirmation}
                         onChange={this.handleStringChange}
                     />
-                    <FormInlineMessage content={errors.passwordConfirm} type="error" />
+                    <FormInlineMessage content={errors.passwordConfirmation} type="error" />
                 </div>
                 <div className="ui fluid buttons">
-                    <button className="ui button" type="submit">
+                    <button className="ui primary button" type="submit">
                         Sign Up
                     </button>
                     <div className="or"/>
-                    <button className="ui button" type="button" onClick={this.props.cancel}>
+                    <Link to="/" className="ui button">
                         Cancel
-                    </button>
+                    </Link>
                 </div>
             </form>
         );
@@ -95,7 +104,7 @@ class SignupForm extends Component {
 }
 
 SignupForm.propTypes = {
-    cancel: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired
 };
 
 export default SignupForm;
