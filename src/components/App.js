@@ -62,7 +62,10 @@ class App extends Component {
                 )}
 
                 <Route path="/" exact component={HomePage} />
-                <Route path="/games" component={GamePage} />
+                <Route 
+                    path="/games"
+                    render={props => <GamePage {...props} user={this.state.user}/>} 
+                />
                 <Route 
                     path="/signup"
                     render={props => (
