@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import AdminRoute from "./AdminRoute";
 import _orderBy from 'lodash/orderBy';
 import _find from 'lodash/find';
 import GameList from './GamesList';
@@ -15,39 +16,6 @@ const publishers = [
     {
         _id: "2",
         name: "Rio Grande Games"
-    }
-];
-
-const games = [
-    {
-        _id: 1,
-        publisher: 1,
-        featured: true,
-        name: "Quadropolis",
-        thumbnail: "https://cf.geekdo-images.com/imagepagezoom/img/_8vPsfrLL8yO7VzTQA1VkjTfsqM=/fit-in/1200x900/filters:no_upscale()/pic2840020.jpg",
-        price: 3299,
-        players: "2-4",
-        duration: 60
-    },
-    {
-        _id: 2,
-        publisher: 1,
-        featured: false,
-        name: "Five Tribes",
-        thumbnail: "https://cf.geekdo-images.com/imagepagezoom/img/duz9VImXFJLPAOeMfyt-pLzV0dM=/fit-in/1200x900/filters:no_upscale()/pic2055255.jpg",
-        price: 5100,
-        players: "2-4",
-        duration: 80
-    },
-    {
-        _id: 3,
-        publisher: 2,
-        featured: false,
-        name: "Roll for the Galaxy",
-        thumbnail: "https://cf.geekdo-images.com/imagepagezoom/img/M6HD1apPIhmhBuvGA8hxPjXGp90=/fit-in/1200x900/filters:no_upscale()/pic1473629.jpg",
-        price: 2999,
-        players: "2-5",
-        duration: 45
     }
 ];
 
@@ -115,34 +83,36 @@ class GamePage extends React.Component {
         return (
             <div className="ui container">
                 <div className="ui stackable grid">
-                    {this.props.user.role === 'admin' ? (
-                        <div>
-                            <Route path="/games/new" render={() => (
-                                <div className="six wide column">
-                                    <GameForm 
-                                        publishers={publishers} 
-                                        submit={this.saveGame}
-                                        game={{}}
-                                    />
-                                </div>
-                            )}/>
-                            <Route path="/games/edit/:_id" render={(props) => (
-                                <div className="six wide column">
-                                    <GameForm 
-                                        publishers={publishers} 
-                                        submit={this.saveGame}
-                                        game={
-                                            _find(this.state.games, {
-                                                _id: props.match.params._id
-                                            }) || {}
-                                        }
-                                    />
-                                </div>
-                            )}/>
-                        </div>
-                    ) : (
-                        <Route path="/games/*" render={() => <Redirect to="/games" />} />
-                    )}
+                    <AdminRoute 
+                        path="/games/new" 
+                        user={this.props.user}
+                        render={() => (
+                            <div className="six wide column">
+                                <GameForm 
+                                    publishers={publishers} 
+                                    submit={this.saveGame}
+                                    game={{}}
+                                />
+                            </div>
+                        )}
+                    />
+                    <AdminRoute 
+                        path="/games/edit/:_id" 
+                        user={this.props.user}
+                        render={(props) => (
+                            <div className="six wide column">
+                                <GameForm 
+                                    publishers={publishers} 
+                                    submit={this.saveGame}
+                                    game={
+                                        _find(this.state.games, {
+                                            _id: props.match.params._id
+                                        }) || {}
+                                    }
+                                />
+                            </div>
+                        )}
+                    />
                     <div className={`${numberOfColumns} wide column`}>
                     {
                         this.state.loading ? (
@@ -168,5 +138,10 @@ class GamePage extends React.Component {
     }
 }
 
-
+GamePage.defaultProps = {
+    user: PropTypes.shape({
+        token: PropTypes.string,
+        role: PropTypes.string.isRequired
+    }).isRequired
+};
 export default GamePage;

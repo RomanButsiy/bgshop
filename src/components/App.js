@@ -19,7 +19,8 @@ const setAuthorizationHeader = (token = null) => {
 class App extends Component {
     state = {
         user: {
-            token: null
+            token: null,
+            role: "user"
         },
         message: ""
     };
