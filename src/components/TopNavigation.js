@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
-const TopNavigation = ({showGameForm, showLoginForm, showSignupForm}) => (
+const TopNavigation = ({isAuthenticated, logout}) => (
     <div className="ui secondary pointing menu">
         <NavLink exact to="/" className="item">
             BGShop
@@ -12,13 +13,28 @@ const TopNavigation = ({showGameForm, showLoginForm, showSignupForm}) => (
         <NavLink exact to="/games/new" className="item">
             <i className="icon plus" /> Add New Game
         </NavLink>
-        <NavLink exact to="/login" className="item">
-            <i className="icon sign-in" /> Login
-        </NavLink>
-        <NavLink exact to="/signup" className="item">
-            <i className="icon pin" /> Signup
-        </NavLink>
+        {isAuthenticated ? (
+             <div className="right menu">
+                <a onClick={logout} className="item">
+                    <i className="icon sign-out" /> Logout
+                </a>
+            </div>
+        ) : (
+            <div className="right menu">
+                <NavLink to="/login" className="item">
+                    <i className="icon sign-in" /> Login
+                </NavLink>
+                <NavLink to="/signup" className="item">
+                    <i className="icon pin" /> Signup
+                </NavLink>
+            </div>
+        )}
     </div>           
 );
+
+TopNavigation.protoType = {
+    isAuthenticated: PropTypes.bool.isRequired,
+    logout: PropTypes.func.isRequired
+};
 
 export default TopNavigation;
