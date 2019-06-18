@@ -4,7 +4,7 @@ import api from '../api';
 
 class LoginPage extends Component {
     submit = data =>
-        api.users.create(data).then(() => this.props.history.push("/login"));
+        api.users.login(data).then((token) => console.log(token));
 
     render() {
         return (
