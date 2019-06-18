@@ -44,7 +44,7 @@ class LoginForm extends Component {
         const formClassNames = loading ? "ui form loading" : "ui form";
         return (
             <form className={formClassNames} onSubmit={this.handleSubmit}>
-                <div className={errors.email ? "field error" : "field"}>
+                <div className={errors.email || errors.global ? "field error" : "field"}>
                     <label htmlFor="email">
                         Email
                     </label>
@@ -56,6 +56,7 @@ class LoginForm extends Component {
                         value={data.email}
                         onChange={this.handleStringChange}
                     />
+                    <FormInlineMessage content={errors.global} type="error" />
                     <FormInlineMessage content={errors.email} type="error" />
                 </div>
                 <div className={errors.password ? "field error" : "field"}>
