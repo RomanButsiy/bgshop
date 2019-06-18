@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"
 import PropTypes from "prop-types";
 import Price from './Price';
 
@@ -23,12 +24,20 @@ const GameDetails = ({ game }) => (
                             <td>Duration:</td>
                             <td>{game.duration} minutes</td>
                         </tr>
+                        <tr>
+                            <td>Price:</td>
+                            <td>
+                                <Price
+                                    className="ui green label"
+                                    cents={game.price}
+                                />
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <Price
-                    className="ui green huge label"
-                    cents={game.price}
-                />
+                    <span className="ui">
+                        <Link to="#" className="ui green huge button">Add to Cart</Link>
+                    </span>    
             </div>
         </div>
     </div>
