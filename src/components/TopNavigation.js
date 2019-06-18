@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const TopNavigation = ({isAuthenticated, isAdmin, logout}) => (
     <div className="ui secondary pointing menu">
@@ -17,9 +17,9 @@ const TopNavigation = ({isAuthenticated, isAdmin, logout}) => (
         )}
         {isAuthenticated ? (
              <div className="right menu">
-                <a onClick={logout} className="item">
+                <Link to="#" onClick={logout} className="item">
                     <i className="icon sign-out" /> Logout
-                </a>
+                </Link>
             </div>
         ) : (
             <div className="right menu">

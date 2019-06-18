@@ -41,7 +41,7 @@ class GameCard extends React.Component {
         );
         const addToCart = (
             <div className="extra content">
-                <a className="ui green basic button">Add to Cart</a>
+                <Link to="#" className="ui green basic button">Add to Cart</Link>
             </div>
         );
 
@@ -56,6 +56,7 @@ class GameCard extends React.Component {
                     featured={game.featured}
                     toggleFeatured={toggleFeatured}
                     gameId={game._id}
+                    user={user}
                 />
                 <img 
                     src={game.thumbnail}
