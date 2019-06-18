@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route } from "react-router-dom";
 import _orderBy from 'lodash/orderBy';
 import _find from 'lodash/find';
 import GameList from './GamesList';
@@ -55,9 +56,6 @@ const games = [
 class GamePage extends React.Component {
     state = {
         games: [],
-        showGameForm: false,
-        showLoginForm: false,
-        showSignupForm: false,
         selectedGame: {},
         loading: true
     };
@@ -81,29 +79,7 @@ class GamePage extends React.Component {
         });
     }
 
-    showGameForm = () => {
-        this.hideLoginForm();
-        this.hideSignupForm();
-        this.setState({ showGameForm: true, selectedGame: {} });
-    }
-    showLoginForm = () => {
-        this.hideSignupForm();
-        this.hideGameForm();
-        this.setState({ showLoginForm: !this.state.showLoginForm });
-    }
-    showSignupForm = () => {
-        this.hideLoginForm();
-        this.hideGameForm();
-        this.setState({ showSignupForm: !this.state.showSignupForm });
-    }
-
-    hideGameForm = () => this.setState({ showGameForm: false, selectedGame: {} });
-    hideLoginForm = () => this.setState({ showLoginForm: false });
-    hideSignupForm = () => this.setState({ showSignupForm: false });    
-
     selectGameForEditing = game => {
-        this.hideLoginForm();
-        this.hideSignupForm();
         this.setState({
             selectedGame: game,
             showGameForm: true
@@ -143,33 +119,20 @@ class GamePage extends React.Component {
         
 
     render() {
-        const numberOfColumns = (
-            this.state.showGameForm || 
-            this.state.showSignupForm  || 
-            this.state.showLoginForm ) ? "ten" : "sixteen";
+        const numberOfColumns = this.props.location.pathname === '/games' 
+            ? "sixteen" : "ten";
         return (
             <div className="ui container">
                 <div className="ui stackable grid">
-                    {this.state.showGameForm && (
+                    <Route path="/games/new" render={() => (
                         <div className="six wide column">
                             <GameForm 
                                 publishers={publishers} 
-                                cancel={this.hideGameForm} 
                                 submit={this.saveGame}
-                                game={this.state.selectedGame}
+                                game={{}}
                             />
                         </div>
-                    )}
-                    {this.state.showSignupForm && (
-                        <div className="six wide column">
-                            <SignupForm cancel={this.hideSignupForm} />
-                        </div>
-                    )}
-                    {this.state.showLoginForm && (
-                        <div className="six wide column">
-                            <LoginForm cancel={this.hideLoginForm} />
-                        </div>
-                    )}
+                    )}/>
                     <div className={`${numberOfColumns} wide column`}>
                     {
                         this.state.loading ? (
