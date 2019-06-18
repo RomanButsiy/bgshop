@@ -56,7 +56,6 @@ const games = [
 class GamePage extends React.Component {
     state = {
         games: [],
-        selectedGame: {},
         loading: true
     };
 
@@ -76,13 +75,6 @@ class GamePage extends React.Component {
         return this.updateGame({
             ...game,
             featured: !game.featured
-        });
-    }
-
-    selectGameForEditing = game => {
-        this.setState({
-            selectedGame: game,
-            showGameForm: true
         });
     }
 
@@ -133,6 +125,19 @@ class GamePage extends React.Component {
                             />
                         </div>
                     )}/>
+                    <Route path="/games/edit/:_id" render={(props) => (
+                        <div className="six wide column">
+                            <GameForm 
+                                publishers={publishers} 
+                                submit={this.saveGame}
+                                game={
+                                    _find(this.state.games, {
+                                        _id: props.match.params._id
+                                    }) || {}
+                                }
+                            />
+                        </div>
+                    )}/>
                     <div className={`${numberOfColumns} wide column`}>
                     {
                         this.state.loading ? (
@@ -146,8 +151,7 @@ class GamePage extends React.Component {
                         ) : (
                             <GameList 
                                 games={this.state.games}
-                                toggleFeatured={this.toggleFeatured} 
-                                editGame={this.selectGameForEditing}
+                                toggleFeatured={this.toggleFeatured}
                                 deleteGame={this.deleteGame}
                             />
                         )

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import GameCard from './GameCard';
 
 
-const GamesList = ({games, toggleFeatured, editGame, deleteGame}) => (
+const GamesList = ({games, toggleFeatured, deleteGame}) => (
     <div className="ui four cards">
         {
             games.length === 0 ? (
@@ -20,7 +20,6 @@ const GamesList = ({games, toggleFeatured, editGame, deleteGame}) => (
                         game={game} 
                         key={game._id} 
                         toggleFeatured={toggleFeatured}
-                        editGame={editGame}
                         deleteGame={deleteGame}
                     />
                 )
@@ -32,7 +31,6 @@ const GamesList = ({games, toggleFeatured, editGame, deleteGame}) => (
 GamesList.propTypes = {
     games: PropTypes.arrayOf(PropTypes.object).isRequired,
     toggleFeatured: PropTypes.func.isRequired,
-    editGame: PropTypes.func.isRequired,
     deleteGame: PropTypes.func.isRequired
 };
 
