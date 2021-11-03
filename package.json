@@ -16,7 +16,7 @@
     "react-scripts": "3.0.1",
     "semantic-ui-css": "^2.4.1",
     "server": "^1.0.19",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
